@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+a.active hr {
+  @apply block
+}
+
+a.active {
+  @apply bg-black text-white sm:bg-inherit sm:text-inherit
+}

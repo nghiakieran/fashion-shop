@@ -6,7 +6,7 @@ import ProductItem from '../components/ProductItem'
 
 const Collection = () => {
 
-  const { products } = useContext(ShopContext)
+  const { products, search, showSearch } = useContext(ShopContext)
   const [showFilter, setShowFilter] = useState(false)
   const [sortType, setSortType] = useState('relavent')
   const [category, setCategory] = useState([])
@@ -32,6 +32,10 @@ const Collection = () => {
 
     let filtered = [...products]
 
+    if (showSearch && search) {
+      filtered = filtered.filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
+    }
+
     if (category.length > 0) {
       filtered = filtered.filter(p => category.includes(p.category))
     }
@@ -41,7 +45,7 @@ const Collection = () => {
     }
 
     return filtered
-  }, [products, category, subCategory])
+  }, [products, category, subCategory, showSearch, search])
 
   // useMemo để sắp xếp sản phẩm đã lọc
   const displayProducts = useMemo(() => {

@@ -9,9 +9,6 @@ const SearchBar = () => {
   const location = useLocation()
   const inputRef = useRef(null)
 
-  // useEffect(() => {
-  //   location.pathname.includes('collection') ? setVisible(true) : setVisible(false)
-  // }, [location])
   // Xác định xem có hiển thị thanh tìm kiếm không
   useEffect(() => {
     setVisible(location.pathname.includes('collection'));

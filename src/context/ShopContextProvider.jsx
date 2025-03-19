@@ -1,7 +1,8 @@
-import { ShopContext } from "./ShopContext";
+import { useEffect, useState } from "react";
 
+import { ShopContext } from "./ShopContext";
 import { products } from "../assets/frontend_assets/assets";
-import { useState } from "react";
+import { toast } from "react-toastify";
 
 const ShopContextProvider = ({ children }) => {
 
@@ -9,9 +10,62 @@ const ShopContextProvider = ({ children }) => {
   const delivery_fee = 10
   const [search, setSearch] = useState('')
   const [showSearch, setShowSearch] = useState(false)
+  const [cartItems, setCartItems] = useState({})
+
+  const addToCart = ( itemId, size) => {
+    if (!size) {
+      toast.error('Select Product Size', {
+        autoClose: 3000
+      })
+      return
+    }
+    // Create oject copy have nested object - structuredClone
+    let cartData = structuredClone(cartItems)
+    // Handle add cart with size
+    if (cartData[itemId]) {
+      if (cartData[itemId][size]) {
+        cartData[itemId][size] += 1
+      }
+      else {
+        cartData[itemId][size] = 1
+      }
+    }
+    else {
+      cartData[itemId] = {}
+      cartData[itemId][size] = 1
+    }
+    setCartItems(cartData)
+  }
+
+  const getCartCount = () => {
+    let totalCount = 0
+    for (const items in cartItems) {
+      for (const item in cartItems[items]) {
+        try {
+          if (cartItems[items][item] > 0) {
+            totalCount += cartItems[items][item]
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    return totalCount
+      
+  }
+  useEffect(() => {
+    console.log(cartItems);
+    for (const items in cartItems)
+        for(const item in cartItems[items]) {
+          console.log('tesst: ', cartItems[items])
+      console.log(item);;}
+  }, [cartItems])
+
   const value = {
     products, currency, delivery_fee,
-    search, setSearch, showSearch, setShowSearch
+    search, setSearch, showSearch, setShowSearch,
+    cartItems, addToCart,
+    getCartCount
   }
 
   return (

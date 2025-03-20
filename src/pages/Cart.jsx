@@ -22,7 +22,8 @@ const Cart = () => {
         }   
     setCartData(tempData)
   }, [cartItems])
-  return (
+  console.log(cartData);
+  return cartData.length > 0 ? (
     <div className='border-t pt-14'>
       <div className='text-2xl mb-3'>
         <Title text1={'YOUR'} text2={'CART'} />
@@ -45,10 +46,14 @@ const Cart = () => {
                   </div>
                 </div>
                 <input 
-                  onChange={e => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, item.size, Number(e.target.value))}
+                  onChange={e => {
+                    const value = e.target.value;
+                    if (value === '' || value === '0') return;
+                    updateQuantity(item._id, item.size, Number(value));
+                  }}
                   className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' 
                   type="number" 
-                  defaultValue={item.quantity} min={1}
+                  value={item.quantity} min={1}
                 />
                 <img 
                   onClick={() => updateQuantity(item._id, item.size, 0)} 
@@ -70,6 +75,10 @@ const Cart = () => {
         </div>
       </div>
     </div>
+  ) : (
+      <div className="text-center py-10 h-80">
+        <p className="text-gray-500">Bạn chưa mua sản phẩm nào.</p>
+      </div>
   )
 }
 

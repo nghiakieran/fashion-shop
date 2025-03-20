@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ShopContext } from "./ShopContext";
 import { products } from "../assets/frontend_assets/assets";
@@ -11,13 +11,21 @@ const ShopContextProvider = ({ children }) => {
   const delivery_fee = 10
   const [search, setSearch] = useState('')
   const [showSearch, setShowSearch] = useState(false)
-  const [cartItems, setCartItems] = useState({})
   const navigate = useNavigate()
+
+  const [cartItems, setCartItems] = useState(() => {
+    const saved = localStorage.getItem('cartItems')
+    return saved ? JSON.parse(saved) : {}
+  })
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems))
+  }, [cartItems])
 
   const addToCart = ( itemId, size) => {
     if (!size) {
       toast.error('Select Product Size', {
-        autoClose: 3000
+        autoClose: 2000
       })
       return
     }
@@ -37,6 +45,10 @@ const ShopContextProvider = ({ children }) => {
       cartData[itemId][size] = 1
     }
     setCartItems(cartData)
+    toast.success('Item added to cart!', { // Thông báo thành công
+      position: 'top-right',
+      autoClose: 2000,
+    });
   }
 
   const getCartCount = () => {
@@ -57,8 +69,16 @@ const ShopContextProvider = ({ children }) => {
 
   const updateQuantity = (itemId, size, quantity) => {
     let cartData = structuredClone(cartItems)
-    cartData[itemId][size] = quantity
-    setCartItems(cartData)
+    if (quantity <= 0) {
+      delete cartData[itemId][size]; // Xóa size
+      if (Object.keys(cartData[itemId]).length === 0) {
+        delete cartData[itemId]; // Xóa itemId nếu không còn size nào
+      }
+    } else {
+      cartData[itemId][size] = quantity;
+      toast.success('Quantity updated', { position: 'top-right', autoClose: 2000 });
+    }
+    setCartItems(cartData);
   }
 
   const getCartAmount = () => {
@@ -83,7 +103,7 @@ const ShopContextProvider = ({ children }) => {
     search, setSearch, showSearch, setShowSearch,
     cartItems, addToCart,
     getCartCount, updateQuantity, getCartAmount,
-    navigate
+    navigate, setCartItems
   }
 
   return (

@@ -2,6 +2,10 @@
 
 Đây là phần frontend của dự án Fashion Shop, được xây dựng bằng React và Vite.
 
+## Deploy Link
+
+[Fashion Shop](https://fashion-shop-ashy.vercel.app/)
+
 ## Công nghệ sử dụng
 
 - React 19

@@ -3,7 +3,7 @@ import { assets } from '../assets/frontend_assets/assets'
 import Title from '../components/Title'
 import { ShopContext } from '../context/ShopContext'
 import ProductItem from '../components/ProductItem'
-
+import { motion } from 'framer-motion';
 const Collection = () => {
 
   const { products, search, showSearch } = useContext(ShopContext)
@@ -60,6 +60,19 @@ const Collection = () => {
     })
   }, [filteredProducts, sortType])
 
+  const listVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }, // Các phần tử con xuất hiện cách nhau 0.2s
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <div className='flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t'>
       {/* Filter collections */}
@@ -114,15 +127,19 @@ const Collection = () => {
         </div>
 
         {/* Map collections */}
+        <motion.div variants={listVariants} initial="hidden" animate="visible">
+
         {
           displayProducts.length > 0 ? (
-            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 gap-y-6'>
+            <motion.div 
+                variants={itemVariants}
+              className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 gap-y-6'>
               {
                 displayProducts.map(p => (
                   <ProductItem key={p._id} id={p._id} name={p.name} price={p.price} image={p.image} />
                 ))
               }
-            </div>
+            </motion.div>
           ) :
           (
             <div className="text-center py-10">
@@ -130,6 +147,7 @@ const Collection = () => {
             </div>
           )
         }
+        </motion.div>
       </div>
     </div>
   )

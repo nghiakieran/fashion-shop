@@ -4,6 +4,7 @@ import { useParams } from "react-router"
 import { ShopContext } from '../context/ShopContext'
 import { assets } from '../assets/frontend_assets/assets'
 import RelatedProduct from '../components/RelatedProduct'
+import { motion } from 'framer-motion';
 
 const Product = () => {
  
@@ -69,7 +70,14 @@ const Product = () => {
               ))}
             </div>
           </div>
-          <button onClick={() => addToCart(productData._id, size)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>ADD TO CART</button>
+          <motion.button 
+            whileHover={{ scale: 1.1, backgroundColor: '#3b82f6' }} 
+            whileTap={{ scale: 0.9 }}               
+            transition={{ duration: 0.2 }}
+            onClick={() => addToCart(productData._id, size)} 
+            className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>
+            ADD TO CART
+          </motion.button>
           <hr className='mt-8 sm:w-4/5'/>
           <div className='flex flex-col gap-1 text-sm text-gray-500 mt-5'>
             <p>100% Original product.</p>

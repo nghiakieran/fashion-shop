@@ -1,6 +1,6 @@
 import React from 'react'
 import { assets } from '../assets/frontend_assets/assets'
-
+import { motion } from 'framer-motion';
 const Hero = () => {
   return (
     <div className='flex flex-col sm:flex-row border border-gray-400'>
@@ -11,7 +11,12 @@ const Hero = () => {
             <p className='w-8 md:w-11 h-[2px] bg-[#414141]'></p>
             <p className='font-medium text-sm md:text-base'>OUR BESTSELLERS</p>
           </div>
-          <h1 className='font-prata text-3xl sm:py-3 lg:text-5xl leading-relaxed'>Latest Arrivals</h1>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className='font-prata text-3xl sm:py-3 lg:text-5xl leading-relaxed'>Latest Arrivals</motion.h1>
           <div className='flex items-center gap-2'>
             <p className='font-semibold text-sm md:text-base'>SHOP NOW</p>
             <p className='w-8 md:w-11 h-[2px] bg-[#414141]'></p>
